@@ -1,110 +1,110 @@
-const apiUrl = 'http://localhost:5000'; // Backend URL
+// const apiUrl = 'https://bank-server-b6bi.onrender.com'; // Backend URL
 
-async function login() {
-  const username = document.getElementById('username').value;
-  const pin = document.getElementById('pin').value;
+// async function login() {
+//   const username = document.getElementById('username').value;
+//   const pin = document.getElementById('pin').value;
 
-  const response = await fetch(`${apiUrl}/auth/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ username, pin }),
-  });
+//   const response = await fetch(`${apiUrl}/auth/login`, {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({ username, pin }),
+//   });
 
-  if (!response.ok) {
-    alert('Invalid username or PIN');
-    return;
-  }
+//   if (!response.ok) {
+//     alert('Invalid username or PIN');
+//     return;
+//   }
 
-  const data = await response.json();
-  localStorage.setItem('token', data.token);
-  showDashboard();
-}
+//   const data = await response.json();
+//   localStorage.setItem('token', data.token);
+//   showDashboard();
+// }
 
-async function showDashboard() {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    return alert('Please login first');
-  }
+// async function showDashboard() {
+//   const token = localStorage.getItem('token');
+//   if (!token) {
+//     return alert('Please login first');
+//   }
 
-  const response = await fetch(`${apiUrl}/account/dashboard`, {
-    method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-    },
-  });
+//   const response = await fetch(`${apiUrl}/account/dashboard`, {
+//     method: 'GET',
+//     headers: {
+//       'Authorization': `Bearer ${token}`,
+//     },
+//   });
 
-  if (!response.ok) {
-    return alert('Error fetching dashboard data');
-  }
+//   if (!response.ok) {
+//     return alert('Error fetching dashboard data');
+//   }
 
-  const data = await response.json();
-  document.getElementById('user-name').textContent = data.user.username;
-  document.getElementById('balance').textContent = data.user.balance;
-  
-  let transactionHtml = '';
-  data.transactions.forEach(transaction => {
-    transactionHtml += `<div>
-      <p>Type: ${transaction.type}</p>
-      <p>Amount: $${transaction.amount}</p>
-      <p>Balance After: $${transaction.balanceAfter}</p>
-    </div>`;
-  });
-  document.getElementById('transaction-history').innerHTML = transactionHtml;
+//   const data = await response.json();
+//   document.getElementById('user-name').textContent = data.user.username;
+//   document.getElementById('balance').textContent = data.user.balance;
 
-  document.getElementById('login-form').style.display = 'none';
-  document.getElementById('dashboard').style.display = 'block';
-}
+//   let transactionHtml = '';
+//   data.transactions.forEach(transaction => {
+//     transactionHtml += `<div>
+//       <p>Type: ${transaction.type}</p>
+//       <p>Amount: $${transaction.amount}</p>
+//       <p>Balance After: $${transaction.balanceAfter}</p>
+//     </div>`;
+//   });
+//   document.getElementById('transaction-history').innerHTML = transactionHtml;
 
-async function logout() {
-  localStorage.removeItem('token');
-  document.getElementById('login-form').style.display = 'block';
-  document.getElementById('dashboard').style.display = 'none';
-}
+//   document.getElementById('login-form').style.display = 'none';
+//   document.getElementById('dashboard').style.display = 'block';
+// }
 
-async function deposit() {
-  const amount = prompt('Enter deposit amount:');
-  if (!amount || amount <= 0) {
-    return alert('Invalid amount');
-  }
+// async function logout() {
+//   localStorage.removeItem('token');
+//   document.getElementById('login-form').style.display = 'block';
+//   document.getElementById('dashboard').style.display = 'none';
+// }
 
-  const response = await fetch(`${apiUrl}/account/deposit`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`,
-    },
-    body: JSON.stringify({ amount }),
-  });
+// async function deposit() {
+//   const amount = prompt('Enter deposit amount:');
+//   if (!amount || amount <= 0) {
+//     return alert('Invalid amount');
+//   }
 
-  if (!response.ok) {
-    return alert('Deposit failed');
-  }
+//   const response = await fetch(`${apiUrl}/account/deposit`, {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'Authorization': `Bearer ${localStorage.getItem('token')}`,
+//     },
+//     body: JSON.stringify({ amount }),
+//   });
 
-  showDashboard();
-}
+//   if (!response.ok) {
+//     return alert('Deposit failed');
+//   }
 
-async function transfer() {
-  const recipientUsername = prompt('Enter recipient username:');
-  const amount = prompt('Enter transfer amount:');
+//   showDashboard();
+// }
 
-  if (!recipientUsername || !amount || amount <= 0) {
-    return alert('Invalid input');
-  }
+// async function transfer() {
+//   const recipientUsername = prompt('Enter recipient username:');
+//   const amount = prompt('Enter transfer amount:');
 
-  const response = await fetch(`${apiUrl}/account/transfer`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`,
-    },
-    body: JSON.stringify({ recipientUsername, amount }),
-  });
+//   if (!recipientUsername || !amount || amount <= 0) {
+//     return alert('Invalid input');
+//   }
 
-  if (!response.ok) {
-    return alert('Transfer failed');
-  }
+//   const response = await fetch(`${apiUrl}/account/transfer`, {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'Authorization': `Bearer ${localStorage.getItem('token')}`,
+//     },
+//     body: JSON.stringify({ recipientUsername, amount }),
+//   });
 
-  showDashboard();
-}
+//   if (!response.ok) {
+//     return alert('Transfer failed');
+//   }
+
+//   showDashboard();
+// }
